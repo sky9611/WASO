@@ -21,27 +21,24 @@ public class ServiceObjetMetier {
         this.container = container;
     }
     
-    public void rechercherPersonneParID(int idPersonne) throws ServiceException {
+    public void rechercherPersonneParID(Integer idPersonne) throws ServiceException {
+        System.out.println("rechercherPersonneParID de SOM execute");
         try {
-            List<Object[]> listePersonne = this.dBConnection.launchQuery("SELECT PersonneID, Nom, Prenom, Mail FROM PERSONNE WHERE PersonneID=?",idPersonne);
+            List<Object[]> listePersonne = this.dBConnection.launchQuery("SELECT PersonneID, Nom, Prenom, Mail FROM PERSONNE WHERE PersonneID=?", idPersonne);
 
-            JsonArray jsonListe = new JsonArray();
 
-            for (Object[] row : listePersonne) {
-                JsonObject jsonItem = new JsonObject();
+            JsonObject jsonItem = new JsonObject();
+            
+            Object[] row = listePersonne.get(0);
+            jsonItem.addProperty("id", (Integer) row[0]);
+            jsonItem.addProperty("nom", (String) row[1]);
+            jsonItem.addProperty("prenom", (String) row[2]);
+            jsonItem.addProperty("mail", (String) row[3]);
 
-                jsonItem.addProperty("id", (Integer) row[0]);
-                jsonItem.addProperty("nom", (String) row[1]);
-                jsonItem.addProperty("prenom", (String) row[2]);
-                jsonItem.addProperty("mail", (String) row[3]);
-
-                jsonListe.add(jsonItem);
-            }
-
-            this.container.add("personnes", jsonListe);
+            this.container.add("personne", jsonItem);
 
         } catch (DBException ex) {
-            throw new ServiceException("Exception in SOM getListePersonne", ex);
+            throw new ServiceException("Exception in SOM rechercherPersonneParNumero", ex);
         }
     }    
     

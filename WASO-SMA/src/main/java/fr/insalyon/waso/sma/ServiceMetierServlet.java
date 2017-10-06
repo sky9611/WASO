@@ -32,7 +32,7 @@ public class ServiceMetierServlet extends HttpServlet {
         try {
 
             String sma = request.getParameter("SMA");
-
+            System.out.println(sma);
             JsonObject container = new JsonObject();
 
             ServiceMetier service = new ServiceMetier(this.getInitParameter("URL-SOM-Client"), this.getInitParameter("URL-SOM-Personne"), container);
@@ -56,15 +56,16 @@ public class ServiceMetierServlet extends HttpServlet {
             } else if ("rechercherClientParDenomination".equals(sma)) {
 
                 String denominationParametre = request.getParameter("denomination");
-                System.out.println(denominationParametre);
+                //System.out.println(denominationParametre);
                 String villeParametre = request.getParameter("ville");
                 if (denominationParametre == null) {
                     throw new ServiceException("Paramètres denomination incomplets");
                 }
                 String denomination = denominationParametre;
                 String ville = villeParametre;
-                
+                //System.out.println("aaaaaaa");
                 service.rechercherClientParDenomination(denomination, ville);
+                //System.out.println("bbbbbbb");
 
             } else if ("rechercherClientParNomPersonne".equals(sma)) {
 

@@ -23,8 +23,9 @@ public class ServiceObjetMetier {
     }
     
     public void rechercherClientParDenomination(String denomination,String ville) throws ServiceException {
+        System.out.println("rechercherClientParDenomination de SOM execute");
         try {
-            System.out.println("denomination de client"+denomination);
+            //System.out.println("denomination de client"+denomination);
             JsonArray jsonListe = new JsonArray();
             List<Object[]> listeClients;
                     
