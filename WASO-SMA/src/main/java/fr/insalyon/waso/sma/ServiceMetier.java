@@ -36,6 +36,48 @@ public class ServiceMetier {
             // Ignorer
         }
     }
+    
+    public void rechercherClientParDenomination(String denomination, String ville) throws ServiceException {
+        System.out.println("enter rechercherClientParDenomination");
+        try {
+
+            // 1. Obtenir la liste des Clients
+            
+            JsonElement clientContainerElement = null;
+            
+            if(ville!=null){
+                clientContainerElement = this.jsonHttpClient.post(this.somClientUrl, new BasicNameValuePair("SOM", "rechercherClientParDenomination"), new BasicNameValuePair("denomination", denomination),new BasicNameValuePair("ville", ville));
+            } else {
+                clientContainerElement = this.jsonHttpClient.post(this.somClientUrl, new BasicNameValuePair("SOM", "rechercherClientParDenomination"), new BasicNameValuePair("denomination", denomination));   
+            }
+            
+            
+            if (clientContainerElement == null) {
+                throw new ServiceException("Appel impossible au Service Client::rechercherClientParDenomination [" + this.somClientUrl + "]");
+            }
+
+            JsonObject clientContainer = clientContainerElement.getAsJsonObject();
+            JsonObject client = clientContainer.getAsJsonObject("client");
+            
+            // 2. Obtenir la liste des Personnes
+            JsonArray personnesList = new JsonArray();
+            for (JsonElement p:client.getAsJsonArray("personnes-ID")){
+                JsonElement personneContainerElement = this.jsonHttpClient.post(this.somPersonneUrl, new BasicNameValuePair("SOM", "rechercherPersonneParID"), new BasicNameValuePair("numero", p.getAsString()));
+                JsonObject personne = personneContainerElement.getAsJsonObject();
+                personnesList.add(personne.get("personne"));
+            }
+            System.out.println(personnesList);
+            
+            client.remove("personnes-ID");
+            client.add("personnes", personnesList);
+            JsonArray clients = new JsonArray();
+            clients.add(client);
+            this.container.add("clients", clients);
+                    
+        } catch (IOException ex) {
+            throw new ServiceException("Exception in SMA rechercherClientParDeonmination", ex);
+        }
+    }
 
     public void getListeClient() throws ServiceException {
         try {

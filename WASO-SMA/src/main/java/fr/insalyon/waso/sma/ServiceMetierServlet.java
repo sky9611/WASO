@@ -55,8 +55,16 @@ public class ServiceMetierServlet extends HttpServlet {
 
             } else if ("rechercherClientParDenomination".equals(sma)) {
 
-
-                // service.rechercherClientParDenomination(denomination,ville);
+                String denominationParametre = request.getParameter("denomination");
+                System.out.println(denominationParametre);
+                String villeParametre = request.getParameter("ville");
+                if (denominationParametre == null) {
+                    throw new ServiceException("Paramètres denomination incomplets");
+                }
+                String denomination = denominationParametre;
+                String ville = villeParametre;
+                
+                service.rechercherClientParDenomination(denomination, ville);
 
             } else if ("rechercherClientParNomPersonne".equals(sma)) {
 
