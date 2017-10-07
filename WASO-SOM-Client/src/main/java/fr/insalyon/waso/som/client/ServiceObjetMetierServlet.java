@@ -50,8 +50,6 @@ public class ServiceObjetMetierServlet extends HttpServlet {
 
             boolean serviceCalled = true;
             
-            System.out.println("som = "+som);
-            
             if ("getListeClient".equals(som)) {
                 
                 service.getListeClient();
@@ -68,14 +66,14 @@ public class ServiceObjetMetierServlet extends HttpServlet {
 
             } else if ("rechercherClientParDenomination".equals(som)) {
                 String denominationParametre = request.getParameter("denomination");
-                System.out.println("asdasdasdasdasdasd");
+                
                 String villeParametre = request.getParameter("ville");
                 if (denominationParametre == null) {
                     throw new ServiceException("Paramètres incomplets");
                 }
                 String denomination = denominationParametre;
                 String ville = villeParametre;
-                
+                System.out.println("villeParametre of request in SOMS: " + ville);
                 service.rechercherClientParDenomination(denomination, ville);
 
             } else if ("rechercherClientParPersonne".equals(som)) {

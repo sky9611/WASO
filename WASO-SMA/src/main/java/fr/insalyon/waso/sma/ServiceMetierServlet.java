@@ -32,7 +32,6 @@ public class ServiceMetierServlet extends HttpServlet {
         try {
 
             String sma = request.getParameter("SMA");
-            System.out.println(sma);
             JsonObject container = new JsonObject();
 
             ServiceMetier service = new ServiceMetier(this.getInitParameter("URL-SOM-Client"), this.getInitParameter("URL-SOM-Personne"), container);
@@ -63,7 +62,7 @@ public class ServiceMetierServlet extends HttpServlet {
                 }
                 String denomination = denominationParametre;
                 String ville = villeParametre;
-                //System.out.println("aaaaaaa");
+                System.out.println("villeOfRequest in SMS: "+ville);
                 service.rechercherClientParDenomination(denomination, ville);
                 //System.out.println("bbbbbbb");
 

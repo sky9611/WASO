@@ -25,14 +25,16 @@ public class ServiceObjetMetier {
     public void rechercherClientParDenomination(String denomination,String ville) throws ServiceException {
         System.out.println("rechercherClientParDenomination de SOM execute");
         try {
-            //System.out.println("denomination de client"+denomination);
+            System.out.println("villeParametre in rechercherClientParDenomination of SOM: " + ville);
             JsonArray jsonListe = new JsonArray();
             List<Object[]> listeClients;
                     
-            if(ville != null) {
-                listeClients = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT WHERE Denomination LIKE '%"+denomination+"%' AND Ville = ? ORDER BY ClientID",ville);
-            } else {
+            if(ville==null) {
                 listeClients = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT WHERE Denomination LIKE '%"+denomination+"%' ORDER BY ClientID");
+            } else if (ville.equals("")){
+                listeClients = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT WHERE Denomination LIKE '%"+denomination+"%' ORDER BY ClientID");
+            } else {
+                listeClients = this.dBConnection.launchQuery("SELECT ClientID, TypeClient, Denomination, Adresse, Ville FROM CLIENT WHERE Denomination LIKE '%"+denomination+"%' AND Ville = ? ORDER BY ClientID",ville);
             }
             
             for (Object[] row : listeClients) {

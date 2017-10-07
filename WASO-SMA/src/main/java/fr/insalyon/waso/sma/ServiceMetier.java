@@ -37,14 +37,13 @@ public class ServiceMetier {
         }
     }
     
-    /*public void rechercherClientParDenomination(String denomination, String ville) throws ServiceException {
+    public void rechercherClientParDenomination(String denomination, String ville) throws ServiceException {
         
         try {
-            System.out.println("enter rechercherClientParDenomination");
             // 1. Obtenir la liste des Clients
             
             JsonObject clientContainer = null;
-            
+            System.out.println("villeParametre of rechercherClientParDenomination in SM: "+ville);
             
             clientContainer = this.jsonHttpClient.post(this.somClientUrl, new BasicNameValuePair("SOM", "rechercherClientParDenomination"), new BasicNameValuePair("denomination", denomination),new BasicNameValuePair("ville", ville));
             if (clientContainer == null) {
@@ -61,15 +60,18 @@ public class ServiceMetier {
             for (JsonElement clientElement:clientListe.getAsJsonArray()){
                 System.out.println("enter boucle");
                 JsonObject c = clientElement.getAsJsonObject();
-                JsonArray personneIDList = c.get("personne-ID").getAsJsonArray();
+                System.out.println("c: "+c);
+                JsonElement personneIDListElement = c.get("personnes-ID");
+                System.out.println(personneIDListElement);
+                JsonArray personneIDList = personneIDListElement.getAsJsonArray();
                 //System.out.println("list: "+personneIDList);
                 for (JsonElement personneID: personneIDList){
                     //System.out.println(personneID.getAsInt());
-                    JsonElement personneContainerElement = this.jsonHttpClient.post(this.somPersonneUrl, new BasicNameValuePair("SOM", "rechercherPersonneParID"), new BasicNameValuePair("idPersonne", personneID.getAsInt()+""));
+                    JsonElement personneContainerElement = this.jsonHttpClient.post(this.somPersonneUrl, new BasicNameValuePair("SOM", "rechercherPersonneParID"), new BasicNameValuePair("id-personne", personneID.getAsInt()+""));
                     JsonObject personne = personneContainerElement.getAsJsonObject();
                     personnesList.add(personne.get("personne"));
                 }
-                c.remove("personnes-ID");
+                //c.remove("personnes-ID");
                 c.add("personnes", personnesList);
                 //clients.add(c);
                 //JsonElement personneContainerElement = this.jsonHttpClient.post(this.somPersonneUrl, new BasicNameValuePair("SOM", "rechercherPersonneParID"), new BasicNameValuePair("numero", clientElement.getAsString()));
@@ -81,24 +83,30 @@ public class ServiceMetier {
         } catch (IOException ex) {
             throw new ServiceException("Exception in SMA rechercherClientParDeonmination", ex);
         }
-    }*/
-    
+    }
+   
+    /*
     public void rechercherClientParDenomination(String denomination, String ville) throws ServiceException {
         
         try {
             // 1. Obtenir la liste des Clients
+            JsonObject clientContainer = null;
+            if (ville!=null){
+                clientContainer = this.jsonHttpClient.post(this.somClientUrl, new BasicNameValuePair("SOM", "rechercherClientParDenomination"), new BasicNameValuePair("denomination", denomination),new BasicNameValuePair("ville", ville));
+            } else {
+                clientContainer = this.jsonHttpClient.post(this.somClientUrl, new BasicNameValuePair("SOM", "rechercherClientParDenomination"), new BasicNameValuePair("denomination", denomination),new BasicNameValuePair("ville", ""));
+            }
             
-            JsonObject clientContainer = this.jsonHttpClient.post(this.somClientUrl, new BasicNameValuePair("SOM", "rechercherClientParDenomination"), new BasicNameValuePair("denomination", denomination),new BasicNameValuePair("ville", ville));
 
             if (clientContainer == null) {
                 throw new ServiceException("Appel impossible au Service Client::getListeClient [" + this.somClientUrl + "]");
             }
 
             JsonArray jsonOutputClientListe = clientContainer.getAsJsonArray("clients"); //new JsonArray();
-            //System.out.println(jsonOutputClientListe);
+            System.out.println(jsonOutputClientListe);
             
             // 2. Obtenir la liste des Personnes
-            /*
+            
             JsonObject personneContainer = this.jsonHttpClient.post(this.somPersonneUrl, new BasicNameValuePair("SOM", "getListePersonne"));
 
             if (personneContainer == null) {
@@ -136,7 +144,7 @@ public class ServiceMetier {
                 client.add("personnes", outputPersonnes);
 
             }
-*/
+
             
             // 4. Ajouter la liste de Clients au conteneur JSON
             
@@ -145,7 +153,7 @@ public class ServiceMetier {
         } catch (IOException ex) {
             throw new ServiceException("Exception in SMA getListeClient", ex);
         }
-    }
+    }*/
     
     public void getListeClient() throws ServiceException {
         try {

@@ -25,10 +25,7 @@ public class ServiceObjetMetier {
         System.out.println("rechercherPersonneParID de SOM execute");
         try {
             List<Object[]> listePersonne = this.dBConnection.launchQuery("SELECT PersonneID, Nom, Prenom, Mail FROM PERSONNE WHERE PersonneID=?", idPersonne);
-
-
-            JsonObject jsonItem = new JsonObject();
-            
+            JsonObject jsonItem = new JsonObject();   
             Object[] row = listePersonne.get(0);
             jsonItem.addProperty("id", (Integer) row[0]);
             jsonItem.addProperty("nom", (String) row[1]);
